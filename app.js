@@ -37,7 +37,7 @@ function populateDropdown(launches) {
 	//adds one option to the dropdown for each launch
 	for (let i = 0; i < launches.length; i++) {
 		const option = document.createElement("option");
-    
+
 		option.textContent = launches[i].name;
 		option.value = launches[i].id;
 		dropdown.appendChild(option);
@@ -49,6 +49,10 @@ function populateDropdown(launches) {
 // - On change, get the selected launch ID
 // - Call getLaunchDetails(launchId, callback)
 document.getElementById("launchDropdown").addEventListener("change", function () {
+
+  const launchId = document.getElementById("launchDropdown").value;
+  getLaunchDetails(launchId, displayLaunchInfo);
+
   // TODO: Get selected launchId
   // TODO: Call getLaunchDetails
 });
@@ -57,6 +61,19 @@ document.getElementById("launchDropdown").addEventListener("change", function ()
 // - Makes a GET request to BASE_URL + "/launches/" + launchId + "/"
 // - Parses the response and passes the launch object to the callback
 function getLaunchDetails(launchId, callback) {
+
+	const xhr = new XMLHttpRequest();
+	xhr.open("GET", BASE_URL + "/launches/" + launchId + "/");
+	xhr.onreadystatechange = function() {
+		if (xhr.readyState == 4 && xhr.status == 200) {
+			//send the whole launch to the callback
+			const launch = JSON.parse(xhr.responseText);
+			callback(launch);
+		}
+    
+	};
+	xhr.send();
+
   // TODO: Implement XHR GET request for a single launch
 }
 
