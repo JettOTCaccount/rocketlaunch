@@ -70,7 +70,7 @@ function getLaunchDetails(launchId, callback) {
 			const launch = JSON.parse(xhr.responseText);
 			callback(launch);
 		}
-    
+
 	};
 	xhr.send();
 
@@ -82,6 +82,41 @@ function getLaunchDetails(launchId, callback) {
 // - Creates an image of the rocket (launch.rocket.configuration.image.image_url) and appends it to #rocket
 // - If no image is available, displays a message instead
 function displayLaunchInfo(launch) {
+
+	const details = document.getElementById("missionDetails");
+	const rocket = document.getElementById("rocket");
+
+	details.innerHTML = "";
+	rocket.innerHTML = "";
+
+	const name = document.createElement("h2");
+	const description = document.createElement("p");
+
+	name.textContent = launch.name;
+
+	//check that the mission and description exist
+
+	if (launch.mission && launch.mission.description) {
+		description.textContent = launch.mission.description;
+	} else {
+		description.textContent = "no description provided";
+	}
+	details.appendChild(name);
+	details.appendChild(description);
+
+
+	//check that the rocket configuration and image exist
+	if (launch.rocket.configuration && launch.rocket.configuration.image && launch.rocket.configuration.image.image_url) {
+		const img = document.createElement("img");
+		img.src = launch.rocket.configuration.image.image_url;
+		img.alt = launch.name;
+		rocket.appendChild(img);
+	} else {
+		rocket.textContent = "no image provided";
+	}
+
+
+
   // TODO: Display mission name and description
   // TODO: Display the rocket image
 }
