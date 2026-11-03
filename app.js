@@ -13,13 +13,20 @@ const BASE_URL = "https://lldev.thespacedevs.com/2.3.0";
 // - Makes a GET request to BASE_URL + "/launches/upcoming/"
 // - Parses the response
 // - Calls the callback function and passes the results array
+
+const statusMessage = document.getElementById("status");
+
+
 function getUpcomingLaunches(callback) {
+  statusMessage.textContent = "Loading...";
 	axios.get(BASE_URL + "/launches/upcoming/")
 		.then(function(response) {
+      statusMessage.textContent = "";
 			populateDropdown(response.data.results);
 		})
 		.catch(function (error) {
         // an error message goes here (Step 7)
+        statusMessage.textContent = "Error: " + error.message;
     });
   // TODO: Implement XHR GET request
 }
@@ -57,13 +64,16 @@ document.getElementById("launchDropdown").addEventListener("change", function ()
 // - Makes a GET request to BASE_URL + "/launches/" + launchId + "/"
 // - Parses the response and passes the launch object to the callback
 function getLaunchDetails(launchId, callback) {
+  statusMessage.textContent = "Loading...";
 
 	axios.get(BASE_URL + "/launches/" + launchId + "/")
 		.then(function(response) {
+      statusMessage.textContent = "";
 			displayLaunchInfo(response.data);
 		})
 
 		.catch(function(error) {
+      statusMessage.textContent = "Error: " + error.message;
 			//error message goes here in Step 7
 		});
 
