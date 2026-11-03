@@ -14,6 +14,17 @@ const BASE_URL = "https://lldev.thespacedevs.com/2.3.0";
 // - Parses the response
 // - Calls the callback function and passes the results array
 function getUpcomingLaunches(callback) {
+	//create the request, open it and set what happens when it changes state
+	const xhr = new XMLHttpRequest();
+	xhr.open("GET", BASE_URL + "/launches/upcoming/");
+	xhr.onreadystatechange = function() {
+		if (xhr.readyState == 4 && xhr.status == 200) {
+			//send the text to the callback
+			const data = JSON.parse(xhr.responseText);
+			callback(data.results);
+		}
+	};
+	xhr.send();
   // TODO: Implement XHR GET request
 }
 
